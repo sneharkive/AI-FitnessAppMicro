@@ -1,6 +1,5 @@
 package com.fitness.activityservice.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,8 +16,13 @@ import lombok.RequiredArgsConstructor;
 public class ActivityService {
 
   private final ActivityRepository activityRepository;
+  private final UserValidationService userValidationService;
 
   public ActivityResponse trackActivity(ActivityRequest req) {
+    boolean isValidUser = userValidationService.validateUser(req.getUserId());
+
+    if(!isValidUser) throw new RuntimeException("Invalid User : " + req.getUserId());
+
     Activity activity = Activity.builder()
         .userId(req.getUserId())
         .type(req.getType())
@@ -32,6 +36,8 @@ public class ActivityService {
 
     return savedAct.toResponse();
   }
+
+  
 
   public List<ActivityResponse> getUSerActivities(String userId) {
     List<Activity> activities = activityRepository.findByUserId(userId);

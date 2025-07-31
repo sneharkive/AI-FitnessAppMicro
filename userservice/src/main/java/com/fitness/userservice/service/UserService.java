@@ -32,4 +32,8 @@ public class UserService {
     return user.toResponse();
   }
 
+  public Boolean existByUserId(String userId) {
+    return userRepository.existsById(userId);
+  }
+
 }

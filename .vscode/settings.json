@@ -1,7 +1,8 @@
 {
   "cSpell.words": [
     "activityservice",
-    "Userservice"
+    "Userservice",
+    "webflux"
   ],
   "java.compile.nullAnalysis.mode": "automatic",
   "java.configuration.updateBuildConfiguration": "interactive"

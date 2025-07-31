@@ -16,22 +16,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class UserController {
 
   private UserService userService;
-  
+
   @GetMapping("/{userId}")
   public ResponseEntity<UserResponse> getUserProfile(@PathVariable String userId) {
-      return ResponseEntity.ok(userService.getUserProfile(userId));
+    return ResponseEntity.ok(userService.getUserProfile(userId));
   }
-  
+
   @PostMapping("/register")
-  public ResponseEntity<UserResponse> register( @Valid @RequestBody RegisterRequest req) {
-      return ResponseEntity.ok(userService.register(req));
+  public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest req) {
+    return ResponseEntity.ok(userService.register(req));
   }
-  
+
+  @GetMapping("/{userId}/validate")
+  public ResponseEntity<Boolean> validateUser(@PathVariable String userId) {
+    return ResponseEntity.ok(userService.existByUserId(userId));
+  }
+
 }
