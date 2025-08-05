@@ -92,3 +92,16 @@ public class UserValidationService {
     return savedAct.toResponse();
   }
 ```
+
+
+
+# RabbitMQ setup 
+
+```bash
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
+```
+
+- in activity-service create a RabbitMqConfig.java add the necessary details also modify pom.mxl then modify the ActivityService (trackActivity()) and send the created activity to RabbitMQ
+
+
+ 
