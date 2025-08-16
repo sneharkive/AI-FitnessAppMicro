@@ -3,6 +3,7 @@
     "activityservice",
     "aiservice",
     "amqp",
+    "configserver",
     "rabbitmq",
     "Userservice",
     "webflux"

@@ -1,0 +1,23 @@
+server:
+  port: 8083
+
+spring:
+
+  config:
+    import: optional:ai-service.secret.yml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+
+rabbitmq:
+  exchange:
+    name: fitness.exchange
+  queue:
+    name: activity.queue
+  routing:
+    key: activity.tracking
+    

@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+spring:
+
+  config:
+    import: optional:user-service.secret.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
