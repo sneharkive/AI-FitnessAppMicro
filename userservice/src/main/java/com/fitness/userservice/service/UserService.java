@@ -1,42 +1,78 @@
 package com.fitness.userservice.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fitness.userservice.dto.RegisterRequest;
 import com.fitness.userservice.dto.UserResponse;
 import com.fitness.userservice.model.User;
 import com.fitness.userservice.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserService {
 
-  @Autowired
-  private UserRepository userRepository;
+    @Autowired
+    private UserRepository repository;
 
-  public UserResponse register(RegisterRequest req) {
-    if (userRepository.existsByEmail(req.getEmail())){
-      User existUser = userRepository.findByEmail(req.getEmail());
-      User savedExistUser = userRepository.save(existUser);
-      return savedExistUser.toResponse();
+    public UserResponse register(RegisterRequest request) {
+
+
+      System.out.println(request);
+
+        if (repository.existsByEmail(request.getEmail())) {
+            User existingUser = repository.findByEmail(request.getEmail());
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(existingUser.getId());
+            userResponse.setKeycloakId(existingUser.getKeycloakId());
+            userResponse.setPassword(existingUser.getPassword());
+            userResponse.setEmail(existingUser.getEmail());
+            userResponse.setFirstName(existingUser.getFirstName());
+            userResponse.setLastName(existingUser.getLastName());
+            userResponse.setCreatedAt(existingUser.getCreatedAt());
+            userResponse.setUpdatedAt(existingUser.getUpdatedAt());
+            return userResponse;
+        }
+
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setKeycloakId(request.getKeycloakId());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+
+        User savedUser = repository.save(user);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setKeycloakId(savedUser.getKeycloakId());
+        userResponse.setId(savedUser.getId());
+        userResponse.setPassword(savedUser.getPassword());
+        userResponse.setEmail(savedUser.getEmail());
+        userResponse.setFirstName(savedUser.getFirstName());
+        userResponse.setLastName(savedUser.getLastName());
+        userResponse.setCreatedAt(savedUser.getCreatedAt());
+        userResponse.setUpdatedAt(savedUser.getUpdatedAt());
+
+        return userResponse;
     }
-    User user = new User();
-    user.setEmail(req.getEmail());
-    user.setPassword(req.getPassword());
-    user.setFirstName(req.getFirstName());
-    user.setLastName(req.getLastName());
 
-    User savedUser = userRepository.save(user);
-    return savedUser.toResponse();
-  }
+    public UserResponse getUserProfile(String userId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
 
-  public UserResponse getUserProfile(String userId) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
-    return user.toResponse();
-  }
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setPassword(user.getPassword());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setCreatedAt(user.getCreatedAt());
+        userResponse.setUpdatedAt(user.getUpdatedAt());
 
-  public Boolean existByUserId(String userId) {
-    return userRepository.existsByKeycloakId(userId);
-  }
+        return userResponse;
+    }
 
+    public Boolean existByUserId(String userId) {
+        log.info("Calling User Validation API for userId: {}", userId);
+        return repository.existsByKeycloakId(userId);
+    }
 }
