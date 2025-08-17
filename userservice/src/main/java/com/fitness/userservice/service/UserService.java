@@ -15,8 +15,11 @@ public class UserService {
   private UserRepository userRepository;
 
   public UserResponse register(RegisterRequest req) {
-    if (userRepository.existsByEmail(req.getEmail()))
-      throw new RuntimeException("Email already exist");
+    if (userRepository.existsByEmail(req.getEmail())){
+      User existUser = userRepository.findByEmail(req.getEmail());
+      User savedExistUser = userRepository.save(existUser);
+      return savedExistUser.toResponse();
+    }
     User user = new User();
     user.setEmail(req.getEmail());
     user.setPassword(req.getPassword());
@@ -33,7 +36,7 @@ public class UserService {
   }
 
   public Boolean existByUserId(String userId) {
-    return userRepository.existsById(userId);
+    return userRepository.existsByKeycloakId(userId);
   }
 
 }

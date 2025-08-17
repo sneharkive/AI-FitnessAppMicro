@@ -32,6 +32,8 @@ public class User {
   @Column(unique = true, nullable = false)
   private String email;
 
+  private String keycloakId;
+
   @Column(nullable = false)
   private String password;
 
@@ -48,7 +50,7 @@ public class User {
   private LocalDateTime updatedAt;
 
   public UserResponse toResponse() {
-    return new UserResponse(this.id, this.email, this.password, this.firstName, this.lastName, this.createdAt,
+    return new UserResponse(this.id, this.email, this.keycloakId, this.password, this.firstName, this.lastName, this.createdAt,
         this.updatedAt);
   }
 }
