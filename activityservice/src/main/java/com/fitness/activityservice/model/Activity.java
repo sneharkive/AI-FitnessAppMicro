@@ -28,7 +28,7 @@ public class Activity {
   private ActivityType type;
   private Integer duration;
   private Integer caloriesBurned;
-  private LocalDateTime starTime;
+  private LocalDateTime startTime;
 
   @Field("metrics")
   private Map<String, Object> additionalMetrics;
@@ -40,7 +40,7 @@ public class Activity {
   private LocalDateTime updatedAt;
 
   public ActivityResponse toResponse() {
-    return new ActivityResponse(this.id, this.userId, this.type, this.duration, this.caloriesBurned, this.starTime,
+    return new ActivityResponse(this.id, this.userId, this.type, this.duration, this.caloriesBurned, this.startTime,
         this.additionalMetrics, this.createdAt, this.updatedAt);
   }
 

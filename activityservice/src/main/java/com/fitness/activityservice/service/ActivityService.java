@@ -40,7 +40,7 @@ public class ActivityService {
         .type(req.getType())
         .duration(req.getDuration())
         .caloriesBurned(req.getCaloriesBurned())
-        .starTime(req.getStarTime())
+        .startTime(req.getStarTime())
         .additionalMetrics(req.getAdditionalMetrics())
         .build();
 
